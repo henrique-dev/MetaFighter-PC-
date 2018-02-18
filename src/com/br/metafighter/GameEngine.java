@@ -1,13 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2018 Paulo Henrique Gonçalves Bacelar 
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.br.metafighter;
 
 import com.br.metafighter.cmp.LoopSteps;
 import com.br.metafighter.cmp.graphics.Sprite;
+import com.br.metafighter.screens.MatchScreen;
+import com.br.metafighter.window.Screen;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,40 +31,33 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author PH
+ * @author Paulo Henrique Gonçalves Bacelar
  */
 public class GameEngine extends JFrame implements LoopSteps {
+    
+    public static final int SCREEN_WIDTH = 1024;
+    public static final int SCREEN_HEIGHT = 800;
+    
+    private Screen currentScreen;
 
-    private GameLoop gameLoop = new GameLoop(this, 60);    
-    
-    private Personagem guedes;
-    private Personagem quele;
-    private Personagem romulo;
-    private Personagem patricia;
-    private Personagem luiz;
-    
-    private Sprite sprite;
+    private GameLoop gameLoop = new GameLoop(this, 60);
 
     private long previous = System.currentTimeMillis();
 
     public GameEngine() {
         super("Meta Fighter");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 900);
+        
+        setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        
+        // Define a janela para o modo tela cheia
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);                        
+        
         setResizable(false);
         setIgnoreRepaint(true);
-
-        setLocationRelativeTo(null);
-        /*
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                gameLoop.stop();
-            }
-        });
-        */
+        setLocationRelativeTo(null);        
         addKeyListener(new TAdapter());
-
     }
 
     public void startMainLoop() {
@@ -60,28 +67,17 @@ public class GameEngine extends JFrame implements LoopSteps {
     @Override
     public void start() {
 
-        createBufferStrategy(2);        
-        
-        guedes = new Personagem("src/img/guedes/sprites01.png", 0, 0, 0, 0);
-        quele = new Personagem("src/img/quele/sprites01.png", 300, 0, 0, 0);
-        romulo = new Personagem("src/img/romulo/sprites01.png", 600, 0, 0, 0);
-        patricia = new Personagem("src/img/patricia/sprites01.png", 0, 450, 0, 0);
-        luiz = new Personagem("src/img/luiz/sprites01.png", 300, 450, 0, 0);
-        
+        createBufferStrategy(2);                        
+        currentScreen = new MatchScreen();                
         
     }
 
     @Override
     public void update() {
         //Calcula o tempo entre dois updates
-        long time = System.currentTimeMillis() - previous;        
+        long time = System.currentTimeMillis() - previous;                        
         
-        guedes.update(time);
-        quele.update(time);
-        romulo.update(time);
-        patricia.update(time);
-        luiz.update(time);
-        
+        currentScreen.update(time);
 
         //Grava o tempo na saída do método
         previous = System.currentTimeMillis();
@@ -100,12 +96,7 @@ public class GameEngine extends JFrame implements LoopSteps {
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
         
-        //ball.draw((Graphics2D)g2); // desenhamos a bola
-        guedes.renderize((Graphics2D)g2);
-        quele.renderize((Graphics2D)g2);
-        romulo.renderize((Graphics2D)g2);
-        patricia.renderize((Graphics2D)g2);
-        luiz.renderize((Graphics2D)g2);
+        currentScreen.renderize((Graphics2D) g2);
         
         // Liberamos os contextos criados
         g.dispose();
@@ -119,8 +110,8 @@ public class GameEngine extends JFrame implements LoopSteps {
     }
 
     @Override
-    public void finalize() {
-
+    public void stop() {
+        
     }
 
     private class GameLoop implements Runnable {
@@ -218,7 +209,7 @@ public class GameEngine extends JFrame implements LoopSteps {
                 e.printStackTrace();
             } finally {
                 running = false;
-                game.finalize();
+                game.stop();
                 System.exit(0);
             }
         }
