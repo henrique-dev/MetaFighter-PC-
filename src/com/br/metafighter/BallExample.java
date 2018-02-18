@@ -5,16 +5,18 @@
  */
 package com.br.metafighter;
 
+import com.br.metafighter.cmp.Component;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 
 /**
  *
  * @author PH
  */
-public class BallExample implements Sprite {
+public class BallExample implements Component {
 
     private static final float SPEED = 200; //Velocidade em 20 pixels / segundo
     private static final int SIZE = 20;
@@ -69,6 +71,12 @@ public class BallExample implements Sprite {
         g.setColor(Color.RED);
         g.fill(new Ellipse2D.Float(x, y, SIZE, SIZE));
         g.dispose();
+    }
+
+    @Override
+    public boolean keyEvent(KeyEvent e) {
+        
+        return false;
     }
 
 }

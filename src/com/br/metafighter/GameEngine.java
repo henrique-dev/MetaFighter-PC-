@@ -5,10 +5,13 @@
  */
 package com.br.metafighter;
 
+import com.br.metafighter.cmp.Sprite;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -22,23 +25,34 @@ public class GameEngine extends JFrame implements LoopSteps {
     private GameLoop gameLoop = new GameLoop(this, 60);
 
     private BallExample ball;
+    
+    private Personagem guedes;
+    private Personagem quele;
+    private Personagem romulo;
+    private Personagem patricia;
+    private Personagem luiz;
+    
+    private Sprite sprite;
 
     private long previous = System.currentTimeMillis();
 
     public GameEngine() {
         super("Meta Fighter");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1920, 1080);
+        setSize(900, 900);
         setResizable(false);
         setIgnoreRepaint(true);
 
         setLocationRelativeTo(null);
+        /*
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 gameLoop.stop();
             }
         });
+        */
+        addKeyListener(new TAdapter());
 
     }
 
@@ -55,6 +69,14 @@ public class GameEngine extends JFrame implements LoopSteps {
         //percorridas pela bola.
         ball = new BallExample(getWidth() - getInsets().left - getInsets().right,
                 getHeight() - getInsets().top - getInsets().bottom);
+        
+        guedes = new Personagem("src/img/guedes/sprites01.png", 0, 0, 0, 0);
+        quele = new Personagem("src/img/quele/sprites01.png", 300, 0, 0, 0);
+        romulo = new Personagem("src/img/romulo/sprites01.png", 600, 0, 0, 0);
+        patricia = new Personagem("src/img/patricia/sprites01.png", 0, 450, 0, 0);
+        luiz = new Personagem("src/img/luiz/sprites01.png", 300, 450, 0, 0);
+        
+        
     }
 
     @Override
@@ -64,6 +86,13 @@ public class GameEngine extends JFrame implements LoopSteps {
 
         //Chama o update dos sprites, no caso, só a bola
         ball.update(time);
+        
+        guedes.update(time);
+        quele.update(time);
+        romulo.update(time);
+        patricia.update(time);
+        luiz.update(time);
+        
 
         //Grava o tempo na saída do método
         previous = System.currentTimeMillis();
@@ -72,7 +101,6 @@ public class GameEngine extends JFrame implements LoopSteps {
     @Override
     public void renderizar() {
         Graphics g = getBufferStrategy().getDrawGraphics();
-
         //Criamos um contexto gráfico que não leva em conta as bordas
         Graphics g2 = g.create(getInsets().left,
                 getInsets().top,
@@ -83,12 +111,17 @@ public class GameEngine extends JFrame implements LoopSteps {
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
         
-        ball.draw((Graphics2D)g2); // desenhamos a bola
+        //ball.draw((Graphics2D)g2); // desenhamos a bola
+        guedes.draw((Graphics2D)g2);
+        quele.draw((Graphics2D)g2);
+        romulo.draw((Graphics2D)g2);
+        patricia.draw((Graphics2D)g2);
+        luiz.draw((Graphics2D)g2);
         
         // Liberamos os contextos criados
         g.dispose();
         g2.dispose();
-    }
+    }       
 
     @Override
     public void desenhar() {
@@ -214,6 +247,25 @@ public class GameEngine extends JFrame implements LoopSteps {
             running = false;
         }
 
+    }
+    
+    private class TAdapter extends KeyAdapter{
+        
+        @Override
+        public void keyPressed(KeyEvent e){
+            int key = e.getKeyCode();
+            
+            switch (key){
+                case KeyEvent.VK_M:
+                    System.out.println("PRESSIONOU");
+                break;
+                case KeyEvent.VK_LEFT:
+                    System.out.println("PRESSINOU DE NOVO");
+                break;
+                    
+            }
+        }
+        
     }
 
     public static void main(String[] args) {
