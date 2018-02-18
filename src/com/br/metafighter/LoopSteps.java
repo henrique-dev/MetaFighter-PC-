@@ -11,10 +11,10 @@ package com.br.metafighter;
  */
 public interface LoopSteps {
     
-    void iniciar();
-    void atualizar();
-    void renderizar();
-    void desenhar();
-    void encerrar();
+    void start();
+    void update();
+    void renderize();
+    void draw();
+    void finalize();
     
 }

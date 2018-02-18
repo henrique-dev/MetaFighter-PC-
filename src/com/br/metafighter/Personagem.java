@@ -7,8 +7,8 @@ package com.br.metafighter;
 
 import com.br.metafighter.cmp.Component;
 import com.br.metafighter.cmp.GameEntity;
-import com.br.metafighter.cmp.Sprite;
-import com.br.metafighter.cmp.Texture;
+import com.br.metafighter.cmp.graphics.Sprite;
+import com.br.metafighter.cmp.graphics.Texture;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -38,16 +38,16 @@ public class Personagem extends GameEntity implements Component{
     @Override
     public void update(long time) {
         counter++;
-        if (counter == 63*4)
+        if (counter == 63*8)
             counter = 0;
     }
 
     @Override
-    public void draw(Graphics2D g2d) {
+    public void renderize(Graphics2D g2d) {
         Graphics2D g = (Graphics2D) g2d.create();
                 
         //g.drawImage(texture.getImage(), null, 0, 0);
-        g.drawImage(sprites[counter/4].getTexture().getImage(), null, x, y);
+        g.drawImage(sprites[counter/8].getTexture().getImage(), null, x, y);
         
         
         

@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.br.metafighter.cmp;
+package com.br.metafighter.screens;
 
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
+import com.br.metafighter.window.Screen;
 
 /**
  *
  * @author PH
  */
-public interface Component {
-    void update(long time);
-    void renderize(Graphics2D g2d);
-    boolean keyEvent(KeyEvent e);
+public class MatchScreen extends Screen{
+    
 }

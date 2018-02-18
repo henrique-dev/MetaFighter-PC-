@@ -12,6 +12,7 @@ package com.br.metafighter.cmp;
 public class Entity {
     
     protected int x, y, width, height;
+    protected boolean active;
     
     protected Entity(int x, int y, int width, int height){
         this.x = x;

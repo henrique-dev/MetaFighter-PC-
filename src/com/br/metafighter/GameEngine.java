@@ -5,7 +5,7 @@
  */
 package com.br.metafighter;
 
-import com.br.metafighter.cmp.Sprite;
+import com.br.metafighter.cmp.graphics.Sprite;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -22,9 +22,7 @@ import javax.swing.JFrame;
  */
 public class GameEngine extends JFrame implements LoopSteps {
 
-    private GameLoop gameLoop = new GameLoop(this, 60);
-
-    private BallExample ball;
+    private GameLoop gameLoop = new GameLoop(this, 60);    
     
     private Personagem guedes;
     private Personagem quele;
@@ -61,14 +59,9 @@ public class GameEngine extends JFrame implements LoopSteps {
     }    
 
     @Override
-    public void iniciar() {
+    public void start() {
 
-        createBufferStrategy(2);
-
-        //Subtrai a decoração da janela da largura e altura máximas
-        //percorridas pela bola.
-        ball = new BallExample(getWidth() - getInsets().left - getInsets().right,
-                getHeight() - getInsets().top - getInsets().bottom);
+        createBufferStrategy(2);        
         
         guedes = new Personagem("src/img/guedes/sprites01.png", 0, 0, 0, 0);
         quele = new Personagem("src/img/quele/sprites01.png", 300, 0, 0, 0);
@@ -80,12 +73,9 @@ public class GameEngine extends JFrame implements LoopSteps {
     }
 
     @Override
-    public void atualizar() {
+    public void update() {
         //Calcula o tempo entre dois updates
-        long time = System.currentTimeMillis() - previous;
-
-        //Chama o update dos sprites, no caso, só a bola
-        ball.update(time);
+        long time = System.currentTimeMillis() - previous;        
         
         guedes.update(time);
         quele.update(time);
@@ -99,7 +89,7 @@ public class GameEngine extends JFrame implements LoopSteps {
     }
 
     @Override
-    public void renderizar() {
+    public void renderize() {
         Graphics g = getBufferStrategy().getDrawGraphics();
         //Criamos um contexto gráfico que não leva em conta as bordas
         Graphics g2 = g.create(getInsets().left,
@@ -112,11 +102,11 @@ public class GameEngine extends JFrame implements LoopSteps {
         g2.fillRect(0, 0, getWidth(), getHeight());
         
         //ball.draw((Graphics2D)g2); // desenhamos a bola
-        guedes.draw((Graphics2D)g2);
-        quele.draw((Graphics2D)g2);
-        romulo.draw((Graphics2D)g2);
-        patricia.draw((Graphics2D)g2);
-        luiz.draw((Graphics2D)g2);
+        guedes.renderize((Graphics2D)g2);
+        quele.renderize((Graphics2D)g2);
+        romulo.renderize((Graphics2D)g2);
+        patricia.renderize((Graphics2D)g2);
+        luiz.renderize((Graphics2D)g2);
         
         // Liberamos os contextos criados
         g.dispose();
@@ -124,13 +114,13 @@ public class GameEngine extends JFrame implements LoopSteps {
     }       
 
     @Override
-    public void desenhar() {
+    public void draw() {
         if (!getBufferStrategy().contentsLost())
             getBufferStrategy().show();
     }
 
     @Override
-    public void encerrar() {
+    public void finalize() {
 
     }
 
@@ -206,14 +196,14 @@ public class GameEngine extends JFrame implements LoopSteps {
             running = true;
 
             try {
-                game.iniciar();
+                game.start();
                 while (running) {
                     beforeTime = System.nanoTime();
                     skipFramesInExcessTime();
 
-                    game.atualizar();
-                    game.renderizar();
-                    game.desenhar();
+                    game.update();
+                    game.renderize();
+                    game.draw();
 
                     afterTime = System.nanoTime();
                     long sleepTime = calculateSleepTime();
@@ -229,7 +219,7 @@ public class GameEngine extends JFrame implements LoopSteps {
                 e.printStackTrace();
             } finally {
                 running = false;
-                game.encerrar();
+                game.finalize();
                 System.exit(0);
             }
         }
@@ -238,7 +228,7 @@ public class GameEngine extends JFrame implements LoopSteps {
             int skips = 0;
             while ((excessTime > desiredUpdateTime) && (skips < maxFrameSkips)) {
                 excessTime -= desiredUpdateTime;
-                game.atualizar();
+                game.update();
                 skips++;
             }
         }

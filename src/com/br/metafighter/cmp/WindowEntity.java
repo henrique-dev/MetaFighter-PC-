@@ -5,19 +5,17 @@
  */
 package com.br.metafighter.cmp;
 
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-
 /**
  *
  * @author PH
  */
-public abstract class GameEntity extends Entity implements Component{
+public abstract class WindowEntity extends Entity implements Component{
     
     protected boolean visible;
-
-    public GameEntity(int x, int y, int width, int height) {
+    protected boolean clickable;
+    
+    public WindowEntity(int x, int y, int width, int height) {
         super(x, y, width, height);
-    }   
+    }
     
 }
