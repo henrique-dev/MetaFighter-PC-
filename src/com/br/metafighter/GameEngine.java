@@ -5,6 +5,7 @@
  */
 package com.br.metafighter;
 
+import com.br.metafighter.cmp.LoopSteps;
 import com.br.metafighter.cmp.graphics.Sprite;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -12,8 +13,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 /**
@@ -256,7 +255,7 @@ public class GameEngine extends JFrame implements LoopSteps {
             }
         }
         
-    }
+    }        
 
     public static void main(String[] args) {
 
