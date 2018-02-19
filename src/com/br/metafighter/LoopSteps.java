@@ -14,15 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.br.metafighter.cmp;
+package com.br.metafighter;
 
 /**
  *
  * @author Paulo Henrique Gonçalves Bacelar
  */
-public interface CharacterCommands {        
+public interface LoopSteps {
     
-    void walking(int side);
-    void moving();
+    void start();
+    void update();
+    void renderize();
+    void draw();
+    void stop();
     
 }

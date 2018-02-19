@@ -16,14 +16,9 @@
  */
 package com.br.metafighter.screens;
 
-import com.br.metafighter.cmp.CharacterAction;
-import com.br.metafighter.cmp.CharacterCommands;
-import com.br.metafighter.cmp.CharacterM;
-import com.br.metafighter.cmp.Event;
 import com.br.metafighter.game.CharacterGuedes;
 import com.br.metafighter.window.Scene;
 import com.br.metafighter.window.Screen;
-import java.awt.event.KeyEvent;
 
 /**
  *

@@ -17,6 +17,8 @@
 package com.br.metafighter.cmp.graphics;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 /**
@@ -41,6 +43,13 @@ public class Sprite {
     
     public void setTexture(Texture texture){
         this.texture = texture;
+    }
+    
+    public void flip(){
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-texture.getImage().getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        texture.setImage( op.filter(texture.getImage(), null) );
     }
     
     public static Sprite[] getSpriteFromTexture(Texture texture, int numberOfSpriteInLines, int numberOfSpriteInColumns, int maxSprites){

@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.br.metafighter.cmp;
+package com.br.metafighter.cmp.character;
 
+import com.br.metafighter.cmp.GameEntity;
+import com.br.metafighter.cmp.character.CharacterAction;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,16 +48,30 @@ public abstract class CharacterM extends GameEntity {
     public static final int DEFEAT2_ACTION = 15;
     public static final int VICTORY1_ACTION = 16;
     public static final int VICTORY2_ACTION = 17;
-    public static final int DAMAGED_ACTION = 18;
-    
-    protected boolean moving;
-    protected boolean walking;
+    public static final int DAMAGED_ACTION = 18;        
     
     protected String name;    
     protected List<CharacterAction> actions;
     protected BufferedImage currentSprite;
     protected CharacterAction currentAction;
     protected int currentKeyAction;
+    
+    protected boolean moveState;
+    protected boolean moving;
+    protected boolean jumpState;
+    protected boolean jumping;
+    protected boolean crouchState;
+    protected boolean crouching;
+    protected boolean guardState;
+    protected boolean guarding;
+    
+    protected int directionX;
+    protected float velocityX;
+    protected float velocityY;
+    protected float acceleration;
+    
+    protected boolean invertState;
+     
 
     public CharacterM(int x, int y, int width, int height) {
         super(x, y, width, height);

@@ -16,9 +16,9 @@
  */
 package com.br.metafighter.game;
 
-import com.br.metafighter.cmp.CharacterAction;
-import com.br.metafighter.cmp.CharacterCommands;
-import com.br.metafighter.cmp.CharacterM;
+import com.br.metafighter.GameEngine;
+import com.br.metafighter.cmp.character.CharacterAction;
+import com.br.metafighter.cmp.character.CharacterM;
 import com.br.metafighter.cmp.Event;
 import com.br.metafighter.cmp.graphics.Sprite;
 import com.br.metafighter.cmp.graphics.Texture;
@@ -38,21 +38,47 @@ public class CharacterGuedes extends CharacterM {
         super.sprites = Sprite.getSpriteFromTexture(
                 new Texture("src/img/guedes/sprites01.png"), 9, 7, 62);
 
-        super.actions.add(WALKING_LEFT_ACTION, new CharacterAction(Sprite.getSpriteFromSprites(sprites, 0, 5, true), 8));
-        super.actions.add(WALKING_RIGHT_ACTION, new CharacterAction(Sprite.getSpriteFromSprites(sprites, 0, 5, false), 8));
+        super.actions.add(WALKING_LEFT_ACTION, new CharacterAction(Sprite.getSpriteFromSprites(sprites, 0, 5, true), 8, WALKING_LEFT_ACTION));
+        super.actions.add(WALKING_RIGHT_ACTION, new CharacterAction(Sprite.getSpriteFromSprites(sprites, 0, 5, false), 8, WALKING_RIGHT_ACTION));
+        
+        super.actions.add(MOVE1_ACTION, new CharacterAction(Sprite.getSpriteFromSprites(sprites, 6, 13, false), 10, MOVE1_ACTION));
+        super.actions.add(MOVE2_ACTION, new CharacterAction(Sprite.getSpriteFromSprites(sprites, 6, 13, true), 10, MOVE2_ACTION));
+        
+        super.velocityX = GameEngine.SCREEN_WIDTH / 150;
+        super.velocityY = GameEngine.SCREEN_HEIGHT / 40;
+        super.acceleration = velocityY / 0.5f;
 
-        super.currentAction = super.actions.get(WALKING_LEFT_ACTION).execute();
+        super.currentAction = super.actions.get(MOVE1_ACTION).execute();
     }
+    
+    private void changeCurrentAction(int action){
+        currentAction = super.actions.get(action);
+    }        
 
     @Override
-    public void update(long time) {                        
-        if (super.walking) {                                    
-            Sprite tmpSprite = currentAction.getSprite();
-            if (tmpSprite == null) {
-                super.currentAction = super.actions.get(WALKING_LEFT_ACTION).execute();
-                tmpSprite = super.actions.get(WALKING_LEFT_ACTION).getSprite();
+    public void update(long time) {                                                    
+        
+        takeSprite();
+        
+        if (moving){
+            x += (velocityX * directionX);
+        }
+        
+    }
+    
+    private void takeSprite(){
+        Sprite tmpSprite = currentAction.getSprite();
+        if (tmpSprite != null) {
+            super.currentSprite = tmpSprite.getTexture().getImage();            
+        } else {
+            switch (currentAction.getAction()){
+                case MOVE1_ACTION:
+                    changeCurrentAction(MOVE2_ACTION);
+                break;
+                case MOVE2_ACTION:
+                    changeCurrentAction(MOVE1_ACTION);
+                break;
             }
-            super.currentSprite = tmpSprite.getTexture().getImage();
         }
     }
 
@@ -60,6 +86,7 @@ public class CharacterGuedes extends CharacterM {
     public void renderize(Graphics2D g2d) {
         Graphics2D g = (Graphics2D) g2d.create();
 
+        
         g.drawImage(super.currentSprite, null, x, y);
 
         g.dispose();
@@ -72,19 +99,29 @@ public class CharacterGuedes extends CharacterM {
 
         switch (key) {
             case KeyEvent.VK_LEFT:
-                if (pressed && !super.walking) {                    
-                    super.walking = true;
+                if (pressed && !super.moving) {                    
+                    super.moving = true;
                     currentAction = super.actions.get(WALKING_LEFT_ACTION).execute();
+                    super.currentKeyAction = WALKING_LEFT_ACTION;
+                    super.moveState = super.moving = true;
+                    directionX = invertState ? 1 : -1;  
                 } else if (!pressed){
-                    super.walking = false;
+                    super.moving = false;
+                    currentAction = super.actions.get(MOVE1_ACTION).execute();
+                    super.moveState = super.moving = false;
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (pressed && !super.walking) {
-                    super.walking = true;
+                if (pressed && !super.moving) {
+                    super.moving = true;
                     currentAction = super.actions.get(WALKING_RIGHT_ACTION).execute();
+                    super.currentKeyAction = WALKING_RIGHT_ACTION;
+                    super.moveState = super.moving = true;
+                    directionX = invertState ? -1 : 1;                    
                 } else if (!pressed){
-                    super.walking = false;
+                    super.moving = false;
+                    currentAction = super.actions.get(MOVE1_ACTION).execute();
+                    super.moveState = super.moving = false;
                 }
                 break;
         }                                

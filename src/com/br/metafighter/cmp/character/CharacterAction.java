@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.br.metafighter.cmp;
+package com.br.metafighter.cmp.character;
 
 import com.br.metafighter.cmp.graphics.Sprite;
 
@@ -29,13 +29,15 @@ public class CharacterAction {
     private int counter;
     private int currentSprite;
     private int totalSprites;
+    private int action;
     
-    public CharacterAction(Sprite[] sprites, int divFrame){
+    public CharacterAction(Sprite[] sprites, int divFrame, int action){
         this.sprites = sprites;
         this.divFrame = divFrame;                        
         this.totalSprites = sprites.length - 1;
         this.counter = 0;
         this.currentSprite = 0;
+        this.action = action;
     }
     
     public CharacterAction execute(){
@@ -67,6 +69,12 @@ public class CharacterAction {
             throw new IllegalArgumentException("Esse sprite não existe");
         return sprites[spriteIndex];
     }
+
+    public int getAction() {
+        return action;
+    }
+    
+    
     
     
     

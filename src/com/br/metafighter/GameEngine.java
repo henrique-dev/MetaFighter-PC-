@@ -17,7 +17,6 @@
 package com.br.metafighter;
 
 import com.br.metafighter.cmp.Event;
-import com.br.metafighter.cmp.LoopSteps;
 import com.br.metafighter.cmp.graphics.Sprite;
 import com.br.metafighter.screens.MatchScreen;
 import com.br.metafighter.window.Screen;
