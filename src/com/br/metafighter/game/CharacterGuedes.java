@@ -24,6 +24,7 @@ import com.br.metafighter.cmp.graphics.Sprite;
 import com.br.metafighter.cmp.graphics.Texture;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.AffineTransformOp;
 
 /**
  *
@@ -66,10 +67,11 @@ public class CharacterGuedes extends CharacterM {
         
     }
     
-    private void takeSprite(){
+    private void takeSprite(){                
+        
         Sprite tmpSprite = currentAction.getSprite();
         if (tmpSprite != null) {
-            super.currentSprite = tmpSprite.getTexture().getImage();            
+            super.currentSprite = tmpSprite;           
         } else {
             switch (currentAction.getAction()){
                 case MOVE1_ACTION:
@@ -80,14 +82,19 @@ public class CharacterGuedes extends CharacterM {
                 break;
             }
         }
+        if (invertState)
+            super.currentSprite.flip();
     }
 
     @Override
     public void renderize(Graphics2D g2d) {
         Graphics2D g = (Graphics2D) g2d.create();
-
         
-        g.drawImage(super.currentSprite, null, x, y);
+        if (!invertState)
+            g.drawImage(super.currentSprite.getTexture().getImage(), invertState ? null : null, x, y);             
+        else{
+            g.drawImage(super.currentSprite.getTexture().getImage(), super.currentSprite.getAffineTransformOp(), x, y);
+        }
 
         g.dispose();
     }
@@ -104,7 +111,7 @@ public class CharacterGuedes extends CharacterM {
                     currentAction = super.actions.get(WALKING_LEFT_ACTION).execute();
                     super.currentKeyAction = WALKING_LEFT_ACTION;
                     super.moveState = super.moving = true;
-                    directionX = invertState ? 1 : -1;  
+                    directionX = -1;
                 } else if (!pressed){
                     super.moving = false;
                     currentAction = super.actions.get(MOVE1_ACTION).execute();
@@ -117,11 +124,16 @@ public class CharacterGuedes extends CharacterM {
                     currentAction = super.actions.get(WALKING_RIGHT_ACTION).execute();
                     super.currentKeyAction = WALKING_RIGHT_ACTION;
                     super.moveState = super.moving = true;
-                    directionX = invertState ? -1 : 1;                    
+                    directionX = 1;                   
                 } else if (!pressed){
                     super.moving = false;
                     currentAction = super.actions.get(MOVE1_ACTION).execute();
                     super.moveState = super.moving = false;
+                }
+                break;
+            case KeyEvent.VK_SPACE:
+                if (pressed){
+                    invertState = !invertState;                    
                 }
                 break;
         }                                
