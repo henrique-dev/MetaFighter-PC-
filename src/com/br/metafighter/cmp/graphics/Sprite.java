@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 public class Sprite {
     
     private Texture texture;
+    private AffineTransformOp affineTransformOp;
     
     public Sprite(Texture texture){
         this.texture = texture;
@@ -46,11 +47,26 @@ public class Sprite {
     }
     
     public void flip(){
+        /*
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-texture.getImage().getWidth(null), 0);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        texture.setImage( op.filter(texture.getImage(), null) );
+        texture.setImage( op.filter(texture.getImage(), null) );        
+        */
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-texture.getImage().getWidth(null), 0);
+        affineTransformOp = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);            
     }
+    
+    public AffineTransformOp getFlip(){
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-texture.getImage().getWidth(null), 0);
+        return new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);            
+    }
+
+    public AffineTransformOp getAffineTransformOp() {
+        return affineTransformOp;
+    }        
     
     public static Sprite[] getSpriteFromTexture(Texture texture, int numberOfSpriteInLines, int numberOfSpriteInColumns, int maxSprites){
         int counter = 0;
