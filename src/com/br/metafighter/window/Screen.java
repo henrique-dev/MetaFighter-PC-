@@ -17,6 +17,7 @@
 package com.br.metafighter.window;
 
 import com.br.metafighter.cmp.Component;
+import com.br.metafighter.cmp.Event;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public abstract class Screen implements Component{
     }
     
     @Override
-    public boolean keyEvent(KeyEvent e){
+    public boolean keyEvent(Event e){
         for (Component cmp : scenes)
             cmp.keyEvent(e);
         return false;

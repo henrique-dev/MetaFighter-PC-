@@ -16,23 +16,36 @@
  */
 package com.br.metafighter.screens;
 
+import com.br.metafighter.cmp.CharacterAction;
+import com.br.metafighter.cmp.CharacterCommands;
+import com.br.metafighter.cmp.CharacterM;
+import com.br.metafighter.cmp.Event;
+import com.br.metafighter.game.CharacterGuedes;
 import com.br.metafighter.window.Scene;
 import com.br.metafighter.window.Screen;
+import java.awt.event.KeyEvent;
 
 /**
  *
  * @author Paulo Henrique Gonçalves Bacelar
  */
-public class MatchScreen extends Screen {        
+public class MatchScreen extends Screen {      
+    
+    private CharacterGuedes hero;    
     
     public MatchScreen(){
         super();
         
-        addScene(new Scene(0, 0, 0, 0) {
+        addScene(new Scene(0, 0, 0, 0) {                        
+            
             @Override
             public void init() {
-                
-            }
+                hero = new CharacterGuedes(500, 500, 100, 100);                                
+                addGameComponent(hero);
+                super.active = true;
+                super.visible = true;
+                super.clickable = true; // modificar
+            }                        
         });
     }
     

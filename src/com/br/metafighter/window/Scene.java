@@ -17,6 +17,7 @@
 package com.br.metafighter.window;
 
 import com.br.metafighter.cmp.Component;
+import com.br.metafighter.cmp.Event;
 import com.br.metafighter.cmp.GameEntity;
 import com.br.metafighter.cmp.WindowEntity;
 import java.awt.Graphics2D;
@@ -91,7 +92,7 @@ public abstract class Scene extends WindowEntity{
     }
 
     @Override
-    public boolean keyEvent(KeyEvent e) {
+    public boolean keyEvent(Event e) {
         if (clickable){
             for (Component cmp : gameComponents)
                 if (cmp != null)
@@ -99,7 +100,7 @@ public abstract class Scene extends WindowEntity{
             for (Component cmp : windowComponents)
                 if (cmp != null)
                     cmp.keyEvent(e);
-        }
+        }       
         return false;
     }
     

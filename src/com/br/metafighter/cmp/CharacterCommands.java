@@ -16,19 +16,13 @@
  */
 package com.br.metafighter.cmp;
 
-import com.br.metafighter.cmp.graphics.Sprite;
-
 /**
  *
  * @author Paulo Henrique Gonçalves Bacelar
  */
-public abstract class GameEntity extends Entity implements Component{
+public interface CharacterCommands {        
     
-    protected boolean visible;
-    protected Sprite sprites[];
-
-    public GameEntity(int x, int y, int width, int height) {
-        super(x, y, width, height);
-    }   
+    void walking(int side);
+    void moving();
     
 }

@@ -16,19 +16,28 @@
  */
 package com.br.metafighter.cmp;
 
-import com.br.metafighter.cmp.graphics.Sprite;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
 
 /**
  *
  * @author Paulo Henrique Gonçalves Bacelar
  */
-public abstract class GameEntity extends Entity implements Component{
+public final class Event extends KeyEvent {
     
-    protected boolean visible;
-    protected Sprite sprites[];
+    private boolean keyPressed;        
+    
+    public Event(KeyEvent e, boolean pressed){
+        super(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+        this.keyPressed = pressed;
+    }
 
-    public GameEntity(int x, int y, int width, int height) {
-        super(x, y, width, height);
-    }   
+    public Event(Component source, int id, long when, int modifiers, int keyCode, char keyChar, int keyLocation) {
+        super(source, id, when, modifiers, keyCode, keyChar, keyLocation);
+    }
+
+    public boolean pressed() {
+        return keyPressed;
+    }            
     
 }

@@ -16,6 +16,7 @@
  */
 package com.br.metafighter;
 
+import com.br.metafighter.cmp.Event;
 import com.br.metafighter.cmp.LoopSteps;
 import com.br.metafighter.cmp.graphics.Sprite;
 import com.br.metafighter.screens.MatchScreen;
@@ -51,8 +52,8 @@ public class GameEngine extends JFrame implements LoopSteps {
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         
         // Define a janela para o modo tela cheia
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);                        
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //setUndecorated(true);                        
         
         setResizable(false);
         setIgnoreRepaint(true);
@@ -232,19 +233,14 @@ public class GameEngine extends JFrame implements LoopSteps {
     private class TAdapter extends KeyAdapter{
         
         @Override
-        public void keyPressed(KeyEvent e){
-            int key = e.getKeyCode();
-            
-            switch (key){
-                case KeyEvent.VK_M:
-                    System.out.println("PRESSIONOU");
-                break;
-                case KeyEvent.VK_LEFT:
-                    System.out.println("PRESSINOU DE NOVO");
-                break;
-                    
-            }
+        public void keyPressed(KeyEvent e){            
+            currentScreen.keyEvent(new Event(e, true));
         }
+        
+        @Override
+        public void keyReleased(KeyEvent e){
+            currentScreen.keyEvent(new Event(e, false));
+        }                
         
     }        
 
